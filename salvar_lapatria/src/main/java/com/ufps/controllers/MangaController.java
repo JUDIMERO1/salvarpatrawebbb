@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/mangas")
 public class MangaController {
 
-	
-	
 	@Autowired
 	private MangaServices mangaService;
 
@@ -49,18 +47,32 @@ public class MangaController {
 	public Manga createManga(@RequestBody MangaDTO mangaDTO) {
 		return mangaService.createManga(mangaDTO);
 	}
-	
-	 @PutMapping("/{id}")
-	    public ResponseEntity<?> updateManga(@PathVariable Integer id, @RequestBody MangaDTO mangaDetails) {
-	        try {
-	            Manga updatedManga = mangaService.updateManga(id, mangaDetails);
-	            return ResponseEntity.ok(updatedManga);
-	        } catch (Exception e) {
-	            Map<String, Object> error = new HashMap<>();
-	            error.put("error", true);
-	            error.put("msg", e.getMessage());
-	            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-	        }
+
+	@PutMapping("/{id}")
+	public ResponseEntity<?> updateManga(@PathVariable Integer id, @RequestBody MangaDTO mangaDetails) {
+		try {
+			Manga updatedManga = mangaService.updateManga(id, mangaDetails);
+			return ResponseEntity.ok(updatedManga);
+		} catch (Exception e) {
+			Map<String, Object> error = new HashMap<>();
+			error.put("error", true);
+			error.put("msg", e.getMessage());
+			return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteManga(@PathVariable Integer id) {
+	    try {
+	        mangaService.deleteManga(id);
+	        return ResponseEntity.noContent().build();
+	    } catch (Exception e) {
+	        Map<String, Object> error = new HashMap<>();
+	        error.put("error", true);
+	        error.put("msg", e.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	    }
+	}
+
 
 }

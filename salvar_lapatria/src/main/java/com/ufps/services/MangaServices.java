@@ -77,6 +77,13 @@ public class MangaServices {
 
 	    return mangaRepository.save(manga);
 	}
+	public void deleteManga(Integer id) throws Exception {
+        if (!mangaRepository.existsById(id)) {
+            throw new Exception("Manga not found");
+        }
+
+        mangaRepository.deleteById(id);
+    }
 
 
 
