@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/mangas")
 public class MangaController {
 
+	
+	
 	@Autowired
 	private MangaServices mangaService;
 
