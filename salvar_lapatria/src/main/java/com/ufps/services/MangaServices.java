@@ -14,8 +14,10 @@ import com.ufps.repositories.MangaRepository;
 import com.ufps.repositories.PaisRepository;
 import com.ufps.repositories.TipoRepository;
 
+
 @Service
 public class MangaServices {
+
 
 	@Autowired
 	private MangaRepository mangaRepository;
@@ -54,37 +56,32 @@ public class MangaServices {
 		return mangaRepository.save(manga);
 	}
 
-	
-	
-	
 	public Manga updateManga(Integer id, MangaDTO mangaDTO) throws Exception {
-	    Optional<Manga> optionalManga = mangaRepository.findById(id);
-	    
-	    if (!optionalManga.isPresent()) {
-	        throw new Exception("Manga not found");
-	    }
+		Optional<Manga> optionalManga = mangaRepository.findById(id);
 
-	    Manga manga = optionalManga.get();
-	    manga.setNombre(mangaDTO.getNombre());
-	    
-	    Tipo tipo = tipoRepository.findById(mangaDTO.getTipoId())
-	            .orElseThrow(() -> new RuntimeException("Tipo not found"));
-	    manga.setTipo(tipo);
-	    
-	    Pais pais = paisRepository.findById(mangaDTO.getPaisId())
-	            .orElseThrow(() -> new RuntimeException("Pais not found"));
-	    manga.setPais(pais);
+		if (!optionalManga.isPresent()) {
+			throw new Exception("Manga not found");
+		}
 
-	    return mangaRepository.save(manga);
+		Manga manga = optionalManga.get();
+		manga.setNombre(mangaDTO.getNombre());
+
+		Tipo tipo = tipoRepository.findById(mangaDTO.getTipoId())
+				.orElseThrow(() -> new RuntimeException("Tipo not found"));
+		manga.setTipo(tipo);
+
+		Pais pais = paisRepository.findById(mangaDTO.getPaisId())
+				.orElseThrow(() -> new RuntimeException("Pais not found"));
+		manga.setPais(pais);
+
+		return mangaRepository.save(manga);
 	}
+
 	public void deleteManga(Integer id) throws Exception {
-        if (!mangaRepository.existsById(id)) {
-            throw new Exception("Manga not found");
-        }
+		if (!mangaRepository.existsById(id)) {
+			throw new Exception("Manga not found");
+		}
 
-        mangaRepository.deleteById(id);
-    }
-
-
-
+		mangaRepository.deleteById(id);
+	}
 }
