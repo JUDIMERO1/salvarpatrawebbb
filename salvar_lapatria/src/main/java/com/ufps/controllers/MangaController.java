@@ -4,7 +4,8 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,9 +39,11 @@ public class MangaController {
 	}
 
 	@GetMapping("/{id}")
-	public Optional<Manga> getMangaById(@PathVariable Integer id) {
-		Optional<Manga> manga = mangaService.findById(id);
-		return manga;
+	public ResponseEntity<?> getMangaById(@PathVariable Integer id) {
+
+		Manga manga = mangaService.findById(id);
+		return ResponseEntity.ok(manga);
+
 	}
 
 	@PostMapping
@@ -63,16 +66,15 @@ public class MangaController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteManga(@PathVariable Integer id) {
-	    try {
-	        mangaService.deleteManga(id);
-	        return ResponseEntity.noContent().build();
-	    } catch (Exception e) {
-	        Map<String, Object> error = new HashMap<>();
-	        error.put("error", true);
-	        error.put("msg", e.getMessage());
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-	    }
+		try {
+			mangaService.deleteManga(id);
+			return ResponseEntity.noContent().build();
+		} catch (Exception e) {
+			Map<String, Object> error = new HashMap<>();
+			error.put("error", true);
+			error.put("msg", e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+		}
 	}
-
 
 }

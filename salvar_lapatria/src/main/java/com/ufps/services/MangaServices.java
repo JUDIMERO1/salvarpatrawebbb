@@ -32,9 +32,16 @@ public class MangaServices {
 		return mangaRepository.findAll();
 	}
 
-	public Optional<Manga> findById(Integer id) {
-		return mangaRepository.findById(id);
+	public Manga findById(Integer id) {
+		Optional<Manga> manga = mangaRepository.findById(id);
+		if (manga.isPresent()) {
+			return manga.get();
+		} else {
+			throw new RuntimeException("Objeto no encontrado");
+		}
 	}
+
+	
 
 	public Manga createManga(MangaDTO mangaDTO) {
 		Manga manga = new Manga();
@@ -84,4 +91,5 @@ public class MangaServices {
 
 		mangaRepository.deleteById(id);
 	}
+	
 }

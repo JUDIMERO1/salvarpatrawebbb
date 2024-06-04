@@ -26,4 +26,6 @@ public class Usuario {
     @ManyToMany(mappedBy = "usuarios")
     public List<Manga> mangas;
 
+	
+
 }
