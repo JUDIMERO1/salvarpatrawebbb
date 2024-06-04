@@ -6,6 +6,6 @@ import java.util.Optional;
 import com.ufps.entitis.Usuario;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
-	Optional<Usuario> findByNombre(String username);
+	Optional<Usuario> findByUsername(String username);
 
 }

@@ -1,43 +1,53 @@
 package com.ufps.Utils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class ErrorResponseUtil {
 
-    public static ResponseEntity<?> buildErrorResponse(Exception e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(true, e.getMessage()));
-    }
+public static ResponseEntity<Map<String, Object>> buildErrorResponse(Exception e) {
+    	
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("error", true);
+        errorResponse.put("msg", e.getMessage());
 
-    public static ResponseEntity<?> buildErrorResponse(String message, Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse(true, message + ": " + e.getMessage()));
-    }
-
-    // Clase interna para representar la estructura del error
-    public static class ErrorResponse {
-        private boolean error;
-        private String message;
-
-        public ErrorResponse(boolean error, String message) {
-            this.error = error;
-            this.message = message;
+        HttpStatus status;
+        switch (e.getMessage()) {
+            case "Usuario no encontrado":
+                status = HttpStatus.NOT_FOUND;
+                break;
+            case "Manga no encontrado":
+                status = HttpStatus.NOT_FOUND;
+                break;
+            case "Favorito no encontrado":
+                status = HttpStatus.NOT_FOUND;
+                break;
+            case "Pais no existe":
+                status = HttpStatus.BAD_REQUEST;
+                break;
+            case "Tipo no existe":
+                status = HttpStatus.BAD_REQUEST;
+                break;
+            case "Manga tiene usuarios asociados":
+                status = HttpStatus.CONFLICT;
+                break;
+            case "Favorito ya se encuentra registrado":
+                status = HttpStatus.CONFLICT;
+                break;
+            default:
+                // Maneja errores de campos obligatorios faltantes
+                if (e.getMessage().startsWith("El campo")) {
+                    status = HttpStatus.BAD_REQUEST;
+                } else {
+                    // Para cualquier otro tipo de error no especificado
+                    status = HttpStatus.INTERNAL_SERVER_ERROR;
+                }
+                break;
         }
 
-        // Getters y setters
-        public boolean isError() {
-            return error;
-        }
-
-        public void setError(boolean error) {
-            this.error = error;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
+        return ResponseEntity.status(status).body(errorResponse);
     }
 }

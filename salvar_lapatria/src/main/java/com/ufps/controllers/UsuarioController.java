@@ -18,38 +18,36 @@ public class UsuarioController {
 	
 
 	@Autowired
-	private UsuarioServices usuariosService;
+    UsuarioServices usuarioServices;
 
-	@GetMapping("/{username}/favoritos")
-	public ResponseEntity<?> getFavoriteMangasUser(@PathVariable String username) {
-		try {
-			return ResponseEntity.ok(usuariosService.getFavoriteMangas(username));
-		} catch (RuntimeException e) {
-			return ErrorResponseUtil.buildErrorResponse(e);
-		} catch (Exception e) {
-			return ErrorResponseUtil.buildErrorResponse("Error desconocido", e);
-		}
-	}
+	 @GetMapping("/{username}/favoritos")
+	    public ResponseEntity<?> getFavoriteMangasUser(@PathVariable String username) {
+	        ResponseEntity<?> response;
+	        try {
+	            response = ResponseEntity.ok(usuarioServices.getFavoriteMangas(username));
+	        } catch (Exception e) {
+	            response = ErrorResponseUtil.buildErrorResponse(e);
+	        }
+	        return response;
+	    }
 
-	@DeleteMapping("/{username}/favoritos/{mangaId}")
-	public ResponseEntity<?> deleteFavoriteMangaUser(@PathVariable String username, @PathVariable Integer mangaId) {
-		try {
-			return ResponseEntity.ok(usuariosService.deleteFavoriteManga(username, mangaId));
-		} catch (RuntimeException e) {
-			return ErrorResponseUtil.buildErrorResponse(e);
-		} catch (Exception e) {
-			return ErrorResponseUtil.buildErrorResponse("Error desconocido", e);
-		}
-	}
-
-	@PostMapping("/{username}/favoritos/{mangaId}")
-	public ResponseEntity<?> addFavoriteMangaUser(@PathVariable String username, @PathVariable Integer mangaId) {
-		try {
-			return ResponseEntity.ok(usuariosService.addFavoriteManga(username, mangaId));
-		} catch (RuntimeException e) {
-			return ErrorResponseUtil.buildErrorResponse(e);
-		} catch (Exception e) {
-			return ErrorResponseUtil.buildErrorResponse("Error desconocido", e);
-		}
-	}
+	 @DeleteMapping("/{username}/favoritos/{mangaId}")
+	    public ResponseEntity<?> deleteFavoriteMangaUser(@PathVariable String username, @PathVariable Integer mangaId) {
+	        ResponseEntity<?> response;
+	        try {
+	            response = ResponseEntity.ok(usuarioServices.deleteFavoriteManga(username, mangaId));
+	        } catch (Exception e) {
+	            response = ErrorResponseUtil.buildErrorResponse(e);
+	        }
+	        return response;
+	    }
+    
+    @PostMapping("/{username}/favoritos/{mangaId}")
+    public ResponseEntity<?> addFavoriteMangaUser(@PathVariable String username, @PathVariable Integer mangaId){
+    	try {
+            return ResponseEntity.ok(usuarioServices.addFavoriteManga(username, mangaId));
+        } catch (Exception e) {
+            return ErrorResponseUtil.buildErrorResponse(e);
+        }
+    }
 }
