@@ -42,23 +42,21 @@ public class UsuarioServices {
         return usuario.getMangas();
     }
 
-	public List<Manga> addFavoriteManga(String username, Integer mangaId) {
-		Manga manga = mangaService.findById(mangaId);
+    public List<Manga> addFavoriteManga(String username, Integer mangaId) {
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-		Usuario usuario = usuarioRepository.findByUsername(username)
-				.orElseThrow(() -> new RuntimeException("Objeto no encontrado"));
+        Manga manga = mangaService.findById(mangaId);
 
-		if (usuario.getMangas().contains(manga)) {
-			throw new RuntimeException("Favorito ya se encuentra registrado");
-		}
+        if (usuario.getMangas().stream().anyMatch(m -> m.getId().equals(mangaId))) {
+            throw new RuntimeException("Manga favorito ya se encuentra registrado");
+        }
 
-		usuario.getMangas().add(manga);
-
-		// Asegurarse de que el manga también tenga el usuario agregado a su lista de usuarios
+        usuario.getMangas().add(manga);
         manga.getUsuarios().add(usuario);
 
         usuarioRepository.save(usuario);
 
-		return getFavoriteMangas(username);
-	}
+        return usuario.getMangas();
+    }
 }

@@ -42,12 +42,14 @@ public class UsuarioController {
 	        return response;
 	    }
     
-    @PostMapping("/{username}/favoritos/{mangaId}")
-    public ResponseEntity<?> addFavoriteMangaUser(@PathVariable String username, @PathVariable Integer mangaId){
-    	try {
-            return ResponseEntity.ok(usuarioServices.addFavoriteManga(username, mangaId));
-        } catch (Exception e) {
-            return ErrorResponseUtil.buildErrorResponse(e);
-        }
-    }
+	 @PostMapping("/{username}/favoritos/{mangaId}")
+	    public ResponseEntity<?> addFavoriteMangaUser(@PathVariable String username, @PathVariable Integer mangaId) {
+	        ResponseEntity<?> response;
+	        try {
+	            response = ResponseEntity.ok(usuarioServices.addFavoriteManga(username, mangaId));
+	        } catch (Exception e) {
+	            response = ErrorResponseUtil.buildErrorResponse(e);
+	        }
+	        return response;
+	    }
 }
